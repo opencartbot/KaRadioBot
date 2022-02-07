@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>KaRadioBot</title>
+<script type="text/javascript">
+	if (localStorage.getItem('device_ip')) {
+		var dev_ip = localStorage.getItem('device_ip');
+	} else {
+		var dev_ip = '192.168.1.1';
+	}
+
+	var radio_api = 'http://'+dev_ip+'/?';
+
+	function send(command)
+	{
+		var xhr = new XMLHttpRequest();
+		url = radio_api + command;
+		xhr.open("GET", url, true);
+		xhr.send(null);
+		return false;
+	}
+
+	function play(stream) {
+		command = 'instant=' +stream;
+		send(command);
+	}
+
+	function volume(value) {
+		command = 'volume='+value;
+		send(command);
+	}
+
+	function save_ip(device_ip) {
+		localStorage.setItem('device_ip', device_ip);
+		var dev_ip = device_ip;
+		location.reload();
+	}
+</script>
+<style>
+  body {
+	background: #000000;
+	color: #ffffff;
+  }
+  button {
+  	border: 1px solid #ffffff;
+  	background: #000000;
+  	color: #ffffff;
+  	padding: 6px 15px;
+  }
+  button:hover {
+	background: #ffffff;
+  	color: #000000;
+  	cursor: pointer;
+  }
+  #playlist, #url {
+    background: #ffffff;
+    color: #000000;
+    padding: 6px;
+  }
+  #slider {
+    min-width: 200px;
+  }
+</style>
+</head>
+
+<body>
+<h1>KaRadioBot</h1>
+<label for="device_ip">Device IP:</label><br>
+<input type="text" name="device_ip" id="device_ip" placeholder="192.168.1.1" value="">
+<button onclick="save_ip(document.getElementById('device_ip').value);">Save</button>
+<br><br>
+<label for="radio">Station:</label>
+<select name="radio" id="radio" onchange="play(this.value)">
+<option value="https://cast.brg.ua:443/powerfm96.aacp">POWER FM</option>
+<option value="http://online.kissfm.ua/KissFM_HD">KISS FM</option>
+<option value="https://cast.radiogroup.com.ua:443/nrj320">RADIO NRJ</option>
+<option value="http://listen6.myradio24.com:9000/5390">KEXXX FM</option>
+<option value="https://cast.radiogroup.com.ua:443/jamfm320">JAM FM</option>
+<option value="https://cast.radiogroup.com.ua:443/loungefm320">LOUNGE FM</option>
+<option value="https://cast.radiogroup.com.ua:443/chillout320">Chill Out</option>
+<option value="http://online.radiorelax.ua/RadioRelax">RELAX</option>
+<option value="https://listen5.myradio24.com:443/atmo">ATMOSFERA</option>
+<option value="http://radio.ukraudio.com:8000/channel2">NISAJA</option>
+<option value="http://91.218.212.67:8000/stream-ps-hi">Громадське</option>
+<option value="http://91.218.212.84:8000/radionv.mp3">Радіо НВ</option>
+<option value="http://holos.fm:8000/holos">Голос Свободи</option>
+<option value="http://fm.prm.ua:8001/prm">Прямий</option>
+<option value="http://91.218.213.49:8000/ur1-mp3">UA Українське радіо</option>
+<option value="http://91.218.213.49:8000/ur2-mp3">Промінь</option>
+<option value="https://cdn.vsnw.net:8943/kyiv_fm_128k">Київ ФМ</option>
+</select>
+<br><br>
+<button onclick="send('start');" width="40%">Play</button>
+<button onclick="send('stop');" width="40%">Pause</button>
+<br><br>
+<label for="slider">Volume</label>
+<input type= "range" class="slider" id="slider" value="0" maxlength="255" width="100%">
+<br><br>
+<button onclick="send('prev');">< Prev</button>
+<button onclick="send('next');">Next ></button>
+<br><br>
+<label for="url">Stream URL:</label><br>
+<input type="url" name="url" id="url" placeholder="http://example.com/stream">
+<button onclick="play(document.getElementById('url').value);">Play</button>
+<br><br><br>
+opencartbot &copy; 2021
+<script type="text/javascript">
+	document.getElementById('device_ip').value = dev_ip;
+	slider.onchange = () => {
+		volume(slider.value);
+	}
+</script>
+</body>
+</html>
